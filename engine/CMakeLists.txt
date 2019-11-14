@@ -1,50 +1,11 @@
-﻿cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.12.4)
 
-set(ENGINE_SRC
-	include/Allocator.h
-	include/Array.h
-	include/Core.h
-	include/Deque.h
-	include/HeapMemory.h
-	include/IManager.h
-	include/Interface.h
-	include/List.h
-	include/Macro.h
-	include/Map.h
-	include/MathFunctions.h
-	include/Matrix3x3.h
-	include/Matrix4x4.h
-	include/MemoryManager.h
-	include/Quaternion.h
-	include/Queue.h
-	include/Random.h
-	include/Set.h
-	include/Stack.h
-	include/System.h
-	include/ThreadManager.h
-	include/Type.h
-	include/Vector2.h
-	include/Vector3.h
-	include/Vector4.h
-
-	src/HeapMemory.cpp
-	src/main.cpp
-	src/MathFunctions.cpp
-	src/Matrix3x3.cpp
-	src/Matrix4x4.cpp
-	src/MemoryManager.cpp
-	src/Quaternion.cpp
-	src/Random.cpp
-	src/System.cpp
-	src/ThreadManager.cpp
-	src/Vector2.cpp
-	src/Vector3.cpp
-	src/Vector4.cpp
-)
+file(GLOB_RECURSE ENGINE_SRC_FILES ${PROJECT_SOURCE_DIR}/engine/src/*.cpp)
+file(GLOB_RECURSE ENGINE_INCLUDE_FILES ${PROJECT_SOURCE_DIR}/engine/include/*.h)
 
 include_directories (include)
 
-add_executable (engine ${ENGINE_SRC})
+add_executable (engine ${ENGINE_SRC_FILES})
 
 set_target_properties (engine PROPERTIES
 	OUTPUT_NAME engine
@@ -53,15 +14,10 @@ set_target_properties (engine PROPERTIES
 )
 
 if (WIN32)
-foreach(FILE ${ENGINE_SRC}) 
-    get_filename_component(FILE_EXT "${FILE}" EXT)
-
-    if ("${FILE_EXT}" MATCHES ".cpp")
-       set(GROUP src)
-    elseif("${FILE_EXT}" MATCHES ".h")
-       set(GROUP include)
-    endif()
-
-    source_group("${GROUP}" FILES "${FILE}")
-endforeach()
+	foreach(SRC_FILE ${ENGINE_SRC_FILES})
+		source_group(src FILES SRC_FILE)
+	endforeach()
+	foreach(INCLUDE_FILE ${ENGINE_INCLUDE_FILES})
+		source_group(include FILES INCLUDE_FILE)
+	endforeach()
 endif()
