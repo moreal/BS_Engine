@@ -1,6 +1,7 @@
 #include "HeapMemory.h"
 #include "MathFunctions.h"
 #include <memory>
+#include <cstring>
 
 inline bool IsAllocated(const uint8* const marker, const size_type index) noexcept
 {
